@@ -6,7 +6,9 @@ public:
     ofxKeyMappableVoid(ofParameter <void> & parameter, int id) : ofxKeyMappable(id), _parameter(parameter){
         parameter.addListener(this, &ofxKeyMappableVoid::notify);
     }
-    void map(){}
+    void map(){
+        _parameter.trigger();
+    }
     void notify(){
         _mapEvent.notify(_id);
     }
