@@ -2,7 +2,7 @@
 
 ofxKeyMapper::ofxKeyMapper() : _idCounter(0){
 	_parameters.setName("parameters");
-	_activeParameter.set("on/off", false);
+	_activeParameter.set("on/off", true);
 	_activeMappingParameter.set("mapping mode", false);
 
 	_parameters.add(_activeParameter);
@@ -37,19 +37,15 @@ void ofxKeyMapper::addParameters(ofParameterGroup & parameters){
     for(auto parameter : parameters){
         auto type = parameter->type();
         if(type == "11ofParameterIvE"){
-            ofLogNotice("ofxKeyMapper") << "adding void parameter " << parameter->getName();
             auto typedParameter = parameter->cast<void>();
             addParameter(typedParameter);
         }else if(type == "11ofParameterIbE"){
             auto typedParameter = parameter->cast<bool>();
-            ofLogNotice("ofxKeyMapper") << "adding bool parameter " << parameter->getName();
             addParameter(typedParameter);
         }else if(type == "11ofParameterIiE"){
-            ofLogNotice("ofxKeyMapper") << "adding int parameter " << parameter->getName();
             auto typedParameter = parameter->cast<int>();
             addParameter(typedParameter);
         }else if(type == "11ofParameterIfE"){
-            ofLogNotice("ofxKeyMapper") << "adding float parameter " << parameter->getName();
             auto typedParameter = parameter->cast<float>();
             addParameter(typedParameter);
         }
@@ -152,6 +148,7 @@ bool ofxKeyMapper::saveMapping(string path, bool force){
 	for(auto mapping : _mapping){
 		int key = mapping.first;
 		int id = mapping.second;
+        // TODO: add parameter name for better debugging or manually removing entries
 		mappingJson["mappings"].push_back({{"key", key}, {"id", id}});
 	}
 	mappingFile << mappingJson.dump(4);
